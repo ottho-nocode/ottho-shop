@@ -1,0 +1,50 @@
+<!--
+  SUBJECT : Bienvenue dans la good Vibe
+  CONTEXT : envoyé quand un client crée un compte (pas activation)
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenue chez Ottho Mojo</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; background: #F5F3F7; color: #1F1D24; margin: 0; padding: 0; }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 32px 24px; }
+    .head { font-family: Georgia, serif; font-style: italic; font-size: 56px; color: #7C4DFF; line-height: 1; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .caption { font-family: ui-monospace, "SF Mono", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #1F1D24; margin: 0 0 32px; }
+    p { font-size: 16px; line-height: 1.55; margin: 0 0 16px; }
+    p em { color: #7C4DFF; font-style: italic; font-family: Georgia, serif; }
+    .cta { display: inline-block; background: #7C4DFF; color: #FBFAFD; padding: 14px 28px; text-decoration: none; font-size: 14px; letter-spacing: 0.02em; font-weight: 500; margin: 24px 0; }
+    .footer { font-family: ui-monospace, "SF Mono", monospace; font-size: 11px; color: #4A4751; margin-top: 48px; padding-top: 24px; border-top: 1px solid #E7E4EC; letter-spacing: 0.04em; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="caption">— OTTHO MOJO · WELCOME</p>
+    <h1 class="head">welcome.</h1>
+
+    <p>{{ customer.first_name }}, ton compte Ottho Mojo est ouvert. Tu fais désormais partie du club, sans carte ni badge.</p>
+
+    <p>Ton compte te sert à :</p>
+    <ul style="font-size: 16px; line-height: 1.55;">
+      <li>Suivre tes commandes en cours et passées</li>
+      <li>Sauver tes adresses pour les futurs achats</li>
+      <li>Recevoir en avant-première les nouvelles pièces</li>
+    </ul>
+
+    <p>Et c'est tout. On ne fait pas de programme de fidélité avec points et niveaux. On préfère que tu portes une bonne pièce que d'accumuler des points.</p>
+
+    <p><em>Que faire maintenant ?</em></p>
+    <ul style="font-size: 16px; line-height: 1.55;">
+      <li>Découvre <a href="{{ shop.url }}/collections/all" style="color: #7C4DFF;">la collection complète</a></li>
+      <li>Lis le <a href="{{ shop.url }}/blogs/journal" style="color: #7C4DFF;">journal</a> pour comprendre la grammaire de la marque</li>
+      <li>Si tu veux apprendre à monter ta propre boutique avec Claude Code, jette un œil à <a href="https://academy.ottho.co" style="color: #7C4DFF;">academy.ottho.co</a></li>
+    </ul>
+
+    <a class="cta" href="{{ shop.url }}/account">Voir mon compte →</a>
+
+    <p class="footer">Ottho Mojo · La good Vibe<br>{{ shop.url }} · construire se porte aussi.</p>
+  </div>
+</body>
+</html>

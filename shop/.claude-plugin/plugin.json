@@ -1,0 +1,9 @@
+{
+  "name": "shop",
+  "version": "1.0.0",
+  "description": "Plugin compagnon du cours academy.ottho.co/claude-shopify. Bootstrap complet d'une boutique Shopify : aspiration de charte, theme Horizon customisé, produits/pages/blog en bulk via Admin GraphQL, shipping zones, multilingue, POD Printful. Encode les patterns testés et les platform limits identifiés (notifications email côté Shopify, sync products côté Printful pour stores Shopify-integrated).",
+  "author": { "name": "Ottho", "email": "tools@ottho.co", "url": "https://ottho.co" },
+  "homepage": "https://academy.ottho.co/claude-shopify",
+  "license": "MIT",
+  "keywords": ["shopify", "ecommerce", "shopify-cli", "shopify-admin-api", "printful", "pod", "merch", "fal", "ottho", "french"]
+}

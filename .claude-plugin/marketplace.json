@@ -1,0 +1,20 @@
+{
+  "name": "ottho-shop",
+  "owner": {
+    "name": "Ottho",
+    "email": "tools@ottho.co",
+    "url": "https://ottho.co"
+  },
+  "metadata": {
+    "description": "Marketplace des plugins Claude Code liés au cours academy.ottho.co « Claude + Shopify ».",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "shop",
+      "source": "./shop",
+      "description": "Plugin compagnon du cours « Claude + Shopify » : bootstrap d'une boutique Shopify de A à Z (CLI + Custom App), aspiration de charte, customisation du theme Horizon via .css.liquid, création produits/pages/blog en bulk via Admin GraphQL, shipping zones, multilingue, intégration POD Printful avec gestion des platform limits documentés.",
+      "version": "1.0.0"
+    }
+  ]
+}

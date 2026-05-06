@@ -1,0 +1,49 @@
+<!--
+  SUBJECT : Ta pièce Ottho Mojo est arrivée · {{ order_name }}
+  CONTEXT : envoyé quand le tracking confirme la livraison
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ta commande Ottho Mojo est livrée</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; background: #F5F3F7; color: #1F1D24; margin: 0; padding: 0; }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 32px 24px; }
+    .head { font-family: Georgia, serif; font-style: italic; font-size: 56px; color: #7C4DFF; line-height: 1; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .caption { font-family: ui-monospace, "SF Mono", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #1F1D24; margin: 0 0 32px; }
+    p { font-size: 16px; line-height: 1.55; margin: 0 0 16px; }
+    p em { color: #7C4DFF; font-style: italic; font-family: Georgia, serif; }
+    .cta { display: inline-block; background: #7C4DFF; color: #FBFAFD; padding: 14px 28px; text-decoration: none; font-size: 14px; letter-spacing: 0.02em; font-weight: 500; margin: 16px 0; }
+    .secondary { display: inline-block; border: 1px solid #1F1D24; color: #1F1D24; padding: 14px 28px; text-decoration: none; font-size: 14px; letter-spacing: 0.02em; font-weight: 500; margin: 16px 8px 16px 0; }
+    .footer { font-family: ui-monospace, "SF Mono", monospace; font-size: 11px; color: #4A4751; margin-top: 48px; padding-top: 24px; border-top: 1px solid #E7E4EC; letter-spacing: 0.04em; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="caption">— OTTHO MOJO · DELIVERED</p>
+    <h1 class="head">elle est là.</h1>
+
+    <p>{{ customer.first_name }}, ta commande <em>{{ order_name }}</em> est arrivée. Elle t'attend.</p>
+
+    <p>Sors-la du paquet. Lis la mention du col. Sens le coton brossé. C'est le moment où la grammaire visuelle d'Ottho Mojo passe de l'écran à ton corps.</p>
+
+    <p><strong>Et maintenant ?</strong></p>
+    <ul style="font-size: 16px; line-height: 1.55;">
+      <li>Lave-la avant de la porter (cycle 30°, à l'envers, séchage à l'air libre).</li>
+      <li>Porte-la fier. Tu portes une posture, pas un slogan.</li>
+      <li>Tague <strong>@ottho.co</strong> sur Insta si tu veux la partager. On adore.</li>
+    </ul>
+
+    <p style="margin-top: 32px;">
+      <a class="cta" href="{{ shop.url }}/collections/all">Voir le reste →</a>
+      <a class="secondary" href="{{ shop.url }}/blogs/journal">Lire le journal</a>
+    </p>
+
+    <p>Si la pièce a un défaut, écris à <a href="mailto:hello@ottho.co" style="color: #7C4DFF;">hello@ottho.co</a>. On gère sans question.</p>
+
+    <p class="footer">Ottho Mojo · La good Vibe<br>{{ shop.url }} · construire se porte aussi.</p>
+  </div>
+</body>
+</html>

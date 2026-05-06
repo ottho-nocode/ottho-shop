@@ -1,0 +1,64 @@
+<!--
+  SUBJECT : Ta commande Ottho Mojo, on la lance · {{ order_name }}
+  CONTEXT : envoyé immédiatement après la commande payée
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ta commande Ottho Mojo</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", sans-serif; background: #F5F3F7; color: #1F1D24; margin: 0; padding: 0; }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 32px 24px; }
+    .head { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 56px; color: #7C4DFF; line-height: 1; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .caption { font-family: ui-monospace, "SF Mono", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #1F1D24; margin: 0 0 32px; }
+    h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: 24px; line-height: 1.2; letter-spacing: -0.01em; margin: 24px 0 8px; color: #1F1D24; }
+    h2 em { color: #7C4DFF; font-style: italic; }
+    p { font-size: 16px; line-height: 1.55; margin: 0 0 16px; }
+    p em { color: #7C4DFF; font-style: italic; font-family: Georgia, "Times New Roman", serif; }
+    .order { background: #FBFAFD; border: 1px solid #E7E4EC; padding: 20px; margin: 24px 0; }
+    .order-num { font-family: ui-monospace, "SF Mono", monospace; font-size: 14px; color: #1F1D24; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 12px 0; border-bottom: 1px solid #E7E4EC; vertical-align: top; }
+    td:last-child { text-align: right; font-family: ui-monospace, "SF Mono", monospace; }
+    .cta { display: inline-block; background: #7C4DFF; color: #FBFAFD; padding: 14px 28px; text-decoration: none; font-family: ui-sans-serif, sans-serif; font-size: 14px; letter-spacing: 0.02em; font-weight: 500; margin: 24px 0; }
+    .footer { font-family: ui-monospace, "SF Mono", monospace; font-size: 11px; color: #4A4751; margin-top: 48px; padding-top: 24px; border-top: 1px solid #E7E4EC; letter-spacing: 0.04em; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="caption">— OTTHO MOJO · LA GOOD <em style="font-family: Georgia, serif; font-style: italic; color: #7C4DFF; text-transform: none; letter-spacing: -0.01em;">VIBE</em></p>
+    <h1 class="head">merci.</h1>
+
+    <p>{{ customer.first_name }}, ta commande <em>{{ order_name }}</em> est lancée. On la prépare avec soin.</p>
+
+    <h2>Ce que tu reçois</h2>
+    <div class="order">
+      <p class="order-num">Commande {{ order_name }} · {{ "now" | date: "%d/%m/%Y" }}</p>
+      <table>
+        {% for line in line_items %}
+        <tr>
+          <td>{{ line.title }}{% if line.variant_title %} · {{ line.variant_title }}{% endif %} <span style="color: #4A4751; font-size: 13px;">×{{ line.quantity }}</span></td>
+          <td>{{ line.final_line_price | money }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td><strong>Total</strong></td>
+          <td><strong>{{ total_price | money }}</strong></td>
+        </tr>
+      </table>
+    </div>
+
+    <h2>La <em>suite</em></h2>
+    <p>Chaque pièce Ottho Mojo est imprimée à la commande dans nos ateliers européens. Ta commande est transmise immédiatement à l'atelier d'impression. Compte 4 à 7 jours pour la livraison en France métropolitaine.</p>
+    <p>Tu recevras un email de confirmation d'expédition avec ton numéro de suivi dès que ta pièce part de l'atelier.</p>
+
+    <a class="cta" href="{{ shop.url }}{{ order.order_status_url }}">Suivre ma commande →</a>
+
+    <p>Une question ? Réponds simplement à cet email, ou écris à <a href="mailto:hello@ottho.co" style="color: #7C4DFF;">hello@ottho.co</a>. Réponse en 24h ouvrées.</p>
+
+    <p class="footer">Ottho Mojo · La good Vibe<br>{{ shop.url }} · construire se porte aussi.</p>
+  </div>
+</body>
+</html>

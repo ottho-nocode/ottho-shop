@@ -1,0 +1,58 @@
+<!--
+  SUBJECT : Ton panier t'attend · La good Vibe
+  CONTEXT : envoyé quelques heures après abandon de panier
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ton panier Ottho Mojo</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; background: #F5F3F7; color: #1F1D24; margin: 0; padding: 0; }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 32px 24px; }
+    .head { font-family: Georgia, serif; font-style: italic; font-size: 48px; color: #7C4DFF; line-height: 1; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .caption { font-family: ui-monospace, "SF Mono", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #1F1D24; margin: 0 0 32px; }
+    p { font-size: 16px; line-height: 1.55; margin: 0 0 16px; }
+    p em { color: #7C4DFF; font-style: italic; font-family: Georgia, serif; }
+    .cart { background: #FBFAFD; border: 1px solid #E7E4EC; padding: 20px; margin: 24px 0; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 12px 0; border-bottom: 1px solid #E7E4EC; vertical-align: top; }
+    td:last-child { text-align: right; font-family: ui-monospace, "SF Mono", monospace; }
+    .cta { display: inline-block; background: #7C4DFF; color: #FBFAFD; padding: 14px 28px; text-decoration: none; font-size: 14px; letter-spacing: 0.02em; font-weight: 500; margin: 16px 0; }
+    .footer { font-family: ui-monospace, "SF Mono", monospace; font-size: 11px; color: #4A4751; margin-top: 48px; padding-top: 24px; border-top: 1px solid #E7E4EC; letter-spacing: 0.04em; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="caption">— OTTHO MOJO · CART</p>
+    <h1 class="head">tu as oublié ?</h1>
+
+    <p>{{ customer.first_name | default: "Hello" }}, tu as laissé une pièce dans ton panier. Pas de pression, juste un rappel discret avant qu'elle ne s'efface.</p>
+
+    <div class="cart">
+      <table>
+        {% for item in checkout.line_items %}
+        <tr>
+          <td>{{ item.product.title }}{% if item.variant.title %} · {{ item.variant.title }}{% endif %} <span style="color: #4A4751; font-size: 13px;">×{{ item.quantity }}</span></td>
+          <td>{{ item.line_price | money }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <p><em>Pourquoi finir la commande ?</em></p>
+    <ul style="font-size: 16px; line-height: 1.55;">
+      <li>Imprimé à la commande dans nos ateliers européens, livré en 4-7 jours</li>
+      <li>Coton bio brossé, encres aqueuses, fabriqué en Lettonie</li>
+      <li>Retours acceptés sous 14 jours sans question</li>
+    </ul>
+
+    <a class="cta" href="{{ url }}">Reprendre ma commande →</a>
+
+    <p>Tu as une question avant de te lancer ? Réponds simplement à cet email.</p>
+
+    <p class="footer">Ottho Mojo · La good Vibe<br>{{ shop.url }}</p>
+  </div>
+</body>
+</html>

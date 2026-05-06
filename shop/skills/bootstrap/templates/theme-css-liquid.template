@@ -1,0 +1,94 @@
+{#
+  Template d'asset CSS Liquid pour theme Horizon (Shopify 2026+).
+
+  Sauvegarde-le dans <project>/store/theme/assets/<brand>.css.liquid
+
+  Puis dans theme/layout/theme.liquid, charge-le :
+    {{ <brand>.css.liquid | asset_url | stylesheet_tag }}
+
+  L'extension .css.liquid permet d'utiliser :
+    - {{ settings.X }} pour les variables du theme editor
+    - {{ 'fonts.googleapis.com/...' | stylesheet_tag }} pour les Google Fonts
+    - {{ section.id }} pour cibler des sections spécifiques (rare)
+
+  ⚠️ Limites Horizon à connaître :
+    - Le HTML strippe les classes CSS sur les éléments de section.
+      Pour styler une section spécifique, utilise un sélecteur parent comme [id*="hero_xxxxxx"]
+    - Top-level DOM dans les rich text doit être <p> ou <h1-6> (sinon sanitizer strip)
+    - Padding settings cap à 100, pas plus
+#}
+
+{# Google Fonts (à adapter à ta brand) #}
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --color-cream: {{ settings.color_cream | default: '#F5F3F7' }};
+    --color-ink: {{ settings.color_ink | default: '#1F1D24' }};
+    --color-accent: {{ settings.color_accent | default: '#7C4DFF' }};
+    --font-serif: 'Instrument Serif', Georgia, serif;
+    --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+
+  /* Hero section : fond cream, texte serif italique violet sur mots pivots */
+  [id*="hero_"] {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+  [id*="hero_"] h1, [id*="hero_"] h2 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 1.05;
+  }
+  [id*="hero_"] em, [id*="hero_"] .italic-violet {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  /* Marquee : Geist Mono, défilement */
+  [id*="marquee_"] {
+    font-family: var(--font-mono);
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+  }
+
+  /* Cacher le hero placeholder par défaut Horizon (si tu utilises une image fal au-dessus) */
+  [id*="hero_"] .hero__media-wrapper {
+    display: none;
+  }
+  [id*="hero_"] {
+    position: relative;
+  }
+  [id*="hero_"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('{{ "hero-bg.jpg" | asset_url }}');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+    opacity: 0.3;
+  }
+  [id*="hero_"] > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Boutons CTA : violet, mono uppercase */
+  .button--primary, button[type="submit"] {
+    background-color: var(--color-accent) !important;
+    color: var(--color-cream) !important;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Product cards : titre serif, prix mono */
+  .card-product__heading {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+  .price__regular, .price__sale {
+    font-family: var(--font-mono);
+  }
+</style>
