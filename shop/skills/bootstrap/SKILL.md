@@ -84,14 +84,44 @@ Pose 5-8 questions structurées. Pour chaque réponse :
 
 ### Phase 3, Shopify account + CLI
 
-User crée le compte Shopify, choix forfait. Une fois le wizard fini, lance dans son terminal :
+**Étape 3.1 — User crée le compte Shopify** (https://www.shopify.com/), choix forfait Trial puis 1 $/mois × 3 si Lite plan dispo.
+
+**Étape 3.2 — Installation du Shopify CLI 3** (si pas déjà installé) :
+
+Doc officielle : **https://shopify.dev/docs/api/shopify-cli**
+
+```bash
+# Option recommandée : npm global
+npm install -g @shopify/cli@latest
+
+# Ou via Homebrew (macOS / Linux)
+brew tap shopify/shopify
+brew install shopify-cli
+
+# Vérifier l'install
+shopify version
+# → 3.90+ attendu (sinon `npm i -g @shopify/cli@latest` pour upgrade)
+```
+
+**Étape 3.3 — Pull et lancement du theme dev**
+
+Le store handle est `<store-name>.myshopify.com` (visible dans l'URL admin, ex `ottho-merch.myshopify.com`).
 
 ```bash
 mkdir -p store/theme
 cd store/theme
-shopify theme init  # ou shopify theme pull si theme existant
-shopify theme dev   # ouvre le browser pour OAuth, token caché
+
+# Init un theme tout neuf basé sur Horizon, ou pull le theme live
+shopify theme init                              # nouveau theme local
+shopify theme pull --store <handle>.myshopify.com   # pull theme actif
+
+# Lance le serveur dev (ouvre browser pour OAuth, token caché)
+shopify theme dev --store <handle>.myshopify.com
 ```
+
+⚠️ Le flag `--store <handle>.myshopify.com` est **obligatoire** depuis Shopify CLI 3.50+. Sans lui, le CLI te demande la valeur en interactif (incompatible avec auto-mode Claude Code).
+
+Lors du premier `shopify theme dev`, le CLI ouvre `https://accounts.shopify.com/...` dans ton browser pour OAuth. Tu te logges avec ton compte Shopify (le même que celui qui a créé le store), tu autorises. Le CLI cache ensuite le token localement.
 
 Le token OAuth est caché dans :
 

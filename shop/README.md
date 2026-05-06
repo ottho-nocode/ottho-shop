@@ -118,9 +118,25 @@ Distinction critique entre choix créatif et choix opérationnel :
 - **Choix créatif** (naming, tagline, concept) : capture verbatim de tes réponses comme case study, c'est du contenu pédagogique réutilisable
 - **Choix opérationnel** (forfait Shopify, B2C/B2B) : enseigne le cadre de décision sans biaiser avec ta réponse perso
 
-### Phase 3, Shopify CLI auth (5 min)
+### Phase 3, Shopify CLI install + auth (5 min)
 
-Tu lances `shopify theme dev` une fois en local, le token OAuth est caché par le CLI dans `~/Library/Preferences/shopify-cli-kit-nodejs/config.json`. Le script `cli-token.py` l'extrait pour les scripts suivants.
+**Installation du CLI** (si pas déjà fait), doc officielle [shopify.dev/docs/api/shopify-cli](https://shopify.dev/docs/api/shopify-cli) :
+
+```bash
+npm install -g @shopify/cli@latest
+# ou : brew tap shopify/shopify && brew install shopify-cli
+shopify version  # → 3.90+ attendu
+```
+
+**Auth via theme dev**. Le store handle est dans l'URL admin (ex `ottho-merch.myshopify.com`). Le flag `--store` est **obligatoire** depuis CLI 3.50+ :
+
+```bash
+mkdir -p store/theme && cd store/theme
+shopify theme init
+shopify theme dev --store <handle>.myshopify.com
+```
+
+Le CLI ouvre `https://accounts.shopify.com/...` pour l'OAuth, tu autorises avec ton compte Shopify, le token est caché dans `~/Library/Preferences/shopify-cli-kit-nodejs/config.json`. Le script `cli-token.py` l'extrait pour les scripts suivants.
 
 Couvre : `read/write_themes`, `read/write_products`, `read/write_files`, `read/write_translations`.
 
