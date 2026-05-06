@@ -1,6 +1,18 @@
 # ottho-shop
 
-> Marketplace Claude Code pour le cours [academy.ottho.co/claude-shopify](https://academy.ottho.co/claude-shopify) « Claude + Shopify ».
+> Marketplace Claude Code pour les plugins du cours [academy.ottho.co/claude-shopify](https://academy.ottho.co/claude-shopify) « Claude + Shopify ».
+
+## Plugins disponibles
+
+### `shop` — Compagnon du cours « Claude + Shopify »
+
+Bootstrap complet d'une boutique Shopify de A à Z (CLI + Custom App). Aspiration de charte, customisation du theme Horizon, création produits/pages/blog en bulk via Admin GraphQL, shipping zones, multilingue, POD Printful avec gestion des platform limits documentés (notifications email côté Shopify, sync products côté Printful pour stores Shopify-integrated).
+
+- **`/shop:bootstrap`** — **MASTER** : orchestre les 11 phases du cours de A à Z (charte → CLI → Custom App → theme → produits → blog → shipping → multilingue → POD), avec checkpoint à chaque phase, reprenable
+- `/shop:bootstrap audit` — audit complet de l'état d'une boutique existante (produits actifs, pages publiées, blog, settings shipping, sync Printful) via Admin GraphQL, sortie en tableau récap
+- `/shop:bootstrap phase=N` — reprend à la phase N spécifique (ex `phase=4` pour Custom App, `phase=8` pour catalogue produit, `phase=11` pour POD Printful)
+
+Détail complet : [shop/README.md](./shop/README.md)
 
 ## Installation
 
@@ -11,23 +23,45 @@ Dans Claude Code :
 /plugin install shop@ottho-shop
 ```
 
-Une fois installé, le plugin expose la commande `/shop:bootstrap`.
+Pour démarrer le parcours complet en une seule commande :
 
-## Plugin `shop`
+```
+/shop:bootstrap
+```
 
-Bootstrap complet d'une boutique Shopify en 11 phases :
+Cette commande pose 5-8 questions structurées (audience, niche, naming, charte source) puis enchaine les 11 phases avec confirmation utilisateur entre chaque. Compter ~3-5h pour une boutique fonctionnelle de bout en bout.
 
-1. **Brand aspiration** — extraction palette + tonalité depuis une URL existante
-2. **Niche + naming** — Q&A guidée (capture créatif vs opérationnel)
-3. **Shopify account + CLI auth** — récupération du token CLI caché
-4. **Custom App via Dev Dashboard** — pour les scopes `write_content`, `write_publications`, `write_translations`, `write_shipping`
-5. **Theme customization** — Horizon (theme Shopify 2026 par défaut) + injection CSS via `.css.liquid`
-6. **Pages & blog** — création via Admin GraphQL (`pageCreate`, `articleCreate`)
-7. **Settings** — taxes, Markets, primary language, multilingue (Translate & Adapt)
-8. **Catalogue produit** — designs visuels via fal.ai Nano Banana 2, bulk import via `productSet`
-9. **Email transactionnels** — ⚠️ platform limit Shopify, paste manuelle dans admin (templates HTML fournis)
-10. **Shipping zones** — `deliveryProfileUpdate` avec gestion du piège `zonesToDelete` top-level
-11. **POD Printful** — install app + sync via UI obligatoire (platform limit pour stores Shopify-integrated), scripts pour le pré-prep
+## Les 11 phases
+
+| # | Phase | Ce que ça fait |
+|---|---|---|
+| 1 | Brand aspiration | WebFetch d'une URL existante → palette + tonalité + typo |
+| 2 | Niche + naming | Q&A guidée (capture créatif vs opérationnel) |
+| 3 | Shopify account + CLI auth | Récupération du token CLI caché par `shopify theme dev` |
+| 4 | Custom App via Dev Dashboard | Token via OAuth `client_credentials` grant pour scopes `write_content`, `write_publications`, `write_translations`, `write_shipping` |
+| 5 | Theme customization | Horizon (theme Shopify 2026 par défaut) + injection CSS via `.css.liquid` |
+| 6 | Pages & blog | `pageCreate`, `articleCreate`, attachement images via `articleUpdate` |
+| 7 | Settings | Taxes, Markets, primary language, multilingue (Translate & Adapt avant pull theme) |
+| 8 | Catalogue produit | Designs visuels via fal.ai Nano Banana 2, bulk import via `productSet` |
+| 9 | Email transactionnels | ⚠️ platform limit Shopify, paste manuelle dans admin (6 templates HTML fournis) |
+| 10 | Shipping zones | `deliveryProfileUpdate` avec gestion du piège `zonesToDelete` top-level |
+| 11 | POD Printful | Install app + sync via UI obligatoire (platform limit), scripts pour le pré-prep |
+
+## Pré-requis
+
+- Avoir suivi (ou lu) les cours [Claude + Site web](https://academy.ottho.co/claude-site-web) et [Claude + Blog](https://academy.ottho.co/claude-blog), ce plugin en est le prolongement
+- Compte Shopify (Trial gratuit, puis 1$/mois × 3 mois sur certains forfaits)
+- Compte Printful gratuit (créé lors de la phase 11)
+- Compte fal.ai pour les designs visuels (~0,40 € pour 10 mockups produit en NB2)
+
+## Pré-requis MCP
+
+Le plugin n'utilise **pas de MCP** : tout passe par les SDK CLI Shopify, l'API REST Printful, et fal.ai en HTTP direct. Auth via :
+
+- Token OAuth Shopify caché dans `~/Library/Preferences/shopify-cli-kit-nodejs/config.json` (récupéré par `cli-token.py`)
+- Token Custom App Shopify généré via `client_credentials` grant (script `custom-app-token.py`)
+- Token API Printful Private créé sur [developers.printful.com](https://developers.printful.com/)
+- Clé API fal.ai en variable d'env
 
 ## Platform limits documentés
 
@@ -44,7 +78,7 @@ Le skill `bootstrap` embarque 7 scripts Python paramétrables (env vars) :
 
 - `cli-token.py` — extrait le token OAuth caché par `shopify theme dev`
 - `custom-app-token.py` — génère un token via OAuth `client_credentials` grant
-- `delivery-profile-update.py` — configure shipping zones avec re-query post-mutation
+- `delivery-profile-update.py` — configure shipping zones avec re-query post-mutation (gestion du silent fail trap)
 - `printful-store-info.py` — récupère le store_id Printful + audit connectivité
 - `printful-verify.py` — audit post-sync : produits Shopify avec metafields Printful
 - `staged-upload.py` — upload binaire vers Shopify CDN via `stagedUploadsCreate` + S3 PUT
@@ -60,8 +94,18 @@ Le skill `bootstrap` embarque 7 scripts Python paramétrables (env vars) :
 - `email-04-customer-welcome.html`
 - `email-05-abandoned-cart.html`
 - `email-06-refund.html`
-- `printful-mapping.template.md` — table de mapping Shopify ↔ Stanley/Stella catalog
-- `theme-css-liquid.template` — injection CSS personnalisée pour Horizon
+- `printful-mapping.template.md` — table de mapping Shopify ↔ Stanley/Stella catalog (Creator 2.0 = #456, Drummer 2.0 = #821, Mug 11oz White = #19, Black = #300)
+- `theme-css-liquid.template` — injection CSS personnalisée pour Horizon (variables Liquid + sélecteurs `[id*="hero_"]` parents)
+
+## Coût indicatif
+
+| Action | Coût LLM | Avec assets fal.ai |
+|---|---|---|
+| `/shop:bootstrap` (full) | ~0,80 € | ~1,20 € (10 mockups produit + 1 hero image) |
+| `/shop:bootstrap phase=8` (catalogue) | ~0,30 € | ~0,70 € |
+| `/shop:bootstrap audit` | ~0,05 € | 0,05 € |
+
+Boutique complète 10 produits + blog 6 articles + emails + POD : **~1,50 €** en LLM + fal.ai (vs développement custom ~2 000-5 000 €).
 
 ## Public visé
 
@@ -69,7 +113,7 @@ Le skill `bootstrap` embarque 7 scripts Python paramétrables (env vars) :
 
 ## Cours associé
 
-[academy.ottho.co/claude-shopify](https://academy.ottho.co/claude-shopify) — 16 leçons sur 4 chapitres + bonus, ~3-5h de pratique réelle pour une boutique fonctionnelle de bout en bout.
+[academy.ottho.co/claude-shopify](https://academy.ottho.co/claude-shopify) — 16 leçons sur 4 chapitres + bonus, ~3-5h de pratique réelle pour une boutique fonctionnelle de bout en bout. Chaque chapitre du cours mobilise une phase du plugin.
 
 ## License
 
